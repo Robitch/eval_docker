@@ -1,0 +1,11 @@
+FROM composer:2.5 as co
+WORKDIR /app
+COPY composer.json composer.lock /app/
+RUN composer install --ignore-platform-req=ext-sockets
+
+FROM php:8
+WORKDIR /app
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+COPY --from=co /app/vendor /app/vendor
+COPY . /app
+CMD ["php", "listener.php"]

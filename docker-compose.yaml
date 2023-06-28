@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  listener: 
+    build: ./listener
+    depends_on:
+      - rabbitmq
+    restart: on-failure
+
+  sender:
+    build: ./sender
+    depends_on:
+      - rabbitmq
+    restart: on-failure
+
+  rabbitmq:
+    image: rabbitmq:3.12.0
+    
